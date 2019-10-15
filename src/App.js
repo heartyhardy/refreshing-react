@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import Note from './Note';
+import Notes from './Notes';
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const [noteState, setNoteState] = useState({
+    notes:[]
+  })
+
+  const [currentNote, setCurrentNote] = useState({
+    note:''
+  })
+
+  const AddNote = () => {
+    if (currentNote.note.length > 0){
+      let notesTmp = [...noteState.notes, currentNote.note];
+      setNoteState({notes:notesTmp});
+    }
+  }
+
+  const changeCurrentNote = event => {
+    setCurrentNote({note:event.target.value});
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <h1 className="title">Welcome to Notes!</h1>
+
+        <Note addNote={AddNote} changed={changeCurrentNote} current={currentNote.note}/>
+
+        <Notes notes={noteState.notes} />
     </div>
   );
 }
